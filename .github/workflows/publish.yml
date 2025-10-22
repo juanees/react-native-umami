@@ -9,9 +9,28 @@ on:
   workflow_dispatch:
 
 jobs:
+  precheck:
+    name: Check NPM token
+    runs-on: ubuntu-latest
+    outputs:
+      has_token: ${{ steps.check.outputs.has_token }}
+    steps:
+      - name: Check if NPM_TOKEN is set
+        id: check
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          if [ -z "$NPM_TOKEN" ]; then
+            echo "has_token=false" >> "$GITHUB_OUTPUT"
+            echo "NPM_TOKEN is not set. Skipping publish job."
+          else
+            echo "has_token=true" >> "$GITHUB_OUTPUT"
+          fi
+
   publish:
-    if: ${{ secrets.NPM_TOKEN != '' }}
     name: Build, Test and Publish
+    needs: precheck
+    if: needs.precheck.outputs.has_token == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
