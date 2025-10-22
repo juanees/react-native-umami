@@ -10,6 +10,7 @@ on:
 
 jobs:
   publish:
+    if: ${{ secrets.NPM_TOKEN != '' }}
     name: Build, Test and Publish
     runs-on: ubuntu-latest
     permissions:
