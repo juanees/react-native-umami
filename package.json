@@ -1,0 +1,16 @@
+{
+  "name": "react-native-umami",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc --project tsconfig.json"
+  },
+  "peerDependencies": {
+    "react": ">=17",
+    "react-native": ">=0.70",
+    "@react-navigation/native": ">=6"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/juanees/react-native-umami"
+}
