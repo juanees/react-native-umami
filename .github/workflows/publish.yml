@@ -53,6 +53,23 @@ jobs:
       - name: Run tests
         run: npm test
 
+      - name: Set package version from tag
+        if: startsWith(github.ref, 'refs/tags/v') || github.event_name == 'release'
+        id: set_version
+        run: |
+          if [ "${{ github.event_name }}" = "release" ]; then
+            TAG="${{ github.event.release.tag_name }}"
+          else
+            TAG="${GITHUB_REF_NAME}"
+          fi
+          if [ -z "$TAG" ]; then
+            echo "No tag found; cannot derive version."
+            exit 1
+          fi
+          VERSION="${TAG#v}"
+          echo "Setting package.json version to $VERSION"
+          npm version "$VERSION" --no-git-tag-version
+
       - name: Build package
         run: npm run build
 
