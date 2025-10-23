@@ -61,7 +61,6 @@ describe('UmamiTracker', () => {
     restoreFetch();
     vi.resetModules();
     const { UmamiTracker: FreshTracker } = await import('../UmamiTracker');
-    // @ts-expect-error intentional misuse to trigger error
     await expect(FreshTracker.track({})).rejects.toThrow('[UmamiTracker] Not initialized');
   });
 });
